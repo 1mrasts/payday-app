@@ -6,7 +6,7 @@ import type { datesType } from './CalendarDays.types'
 export function CalendarDays() {
 	const [days, setDays] = useState<datesType[]>([])
 	// Получаем нашу текущую дату
-	const [currentDate, setCurrentDate] = useState<Date>(new Date())
+	const [currentDate] = useState<Date>(new Date())
 	useEffect(() => {
 		const startDays: datesType[] = []
 
@@ -45,6 +45,9 @@ export function CalendarDays() {
 		<div className={styles['calendar__menu']}>
 			{days.map(item => (
 				<span
+					className={
+						item.date.getDate() == currentDate.getDate() ? styles['today'] : ''
+					}
 					key={item.id}
 					onClick={(e: React.MouseEvent<HTMLSpanElement>) =>
 						handleDateClick(e, item.id)

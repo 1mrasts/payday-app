@@ -9,3 +9,6 @@
 	flex-direction: row;
 	justify-content: center;
 }
+.today {
+	color: red;
+}
