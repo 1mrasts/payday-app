@@ -46,12 +46,17 @@ export function CalendarDays() {
 			{days.map(item => (
 				<span
 					className={
-						item.date.getDate() == currentDate.getDate() ? styles['today'] : ''
+						item.date.getDate() == currentDate.getDate() &&
+						item?.meta != undefined
+							? `${styles['today']} ${styles['prices']}`
+							: item.date.getDate() == currentDate.getDate()
+								? styles['today']
+								: item?.meta != undefined
+									? styles['prices']
+									: ''
 					}
 					key={item.id}
-					onClick={(e: React.MouseEvent<HTMLSpanElement>) =>
-						handleDateClick(e, item.id)
-					}
+					onClick={() => handleDateClick(item.id, days, setDays)}
 				>
 					{item.date.getDate()}
 				</span>
