@@ -49,26 +49,34 @@ export function CalendarDays({
 
 	return (
 		<div className={styles['calendar__menu']}>
-			{days.map(item => (
-				<span
-					className={
-						item.date.getDate() == currentDate.getDate() &&
-						item.date.getDay() == currentDate.getDay() &&
-						item?.meta != undefined
-							? `${styles['today']} ${styles['prices']}`
-							: item.date.getDate() == currentDate.getDate() &&
-								  item.date.getDay() == currentDate.getDay()
-								? styles['today']
-								: item?.meta != undefined
-									? styles['prices']
-									: ''
-					}
-					key={item.id}
-					onClick={() => handleDateClick(item.id, days, setDays, salary)}
-				>
-					{item.date.getDate()}
-				</span>
-			))}
+			{days.map(item => {
+				const isToday =
+					item.date.getDate() == currentDate.getDate() &&
+					item.date.getDay() == currentDate.getDay() &&
+					item.date.getMonth() == currentDate.getMonth()
+
+				const hasPrice = item?.meta !== undefined
+
+				let className = ''
+
+				if (isToday && hasPrice) {
+					className = `${styles['today']} ${styles['prices']}`
+				} else if (isToday) {
+					className = `${styles['today']}`
+				} else if (hasPrice) {
+					className = `${styles['prices']}`
+				}
+
+				return (
+					<span
+						className={className}
+						key={item.id}
+						onClick={() => handleDateClick(item.id, days, setDays, salary)}
+					>
+						{item.date.getDate()}
+					</span>
+				)
+			})}
 		</div>
 	)
 }
