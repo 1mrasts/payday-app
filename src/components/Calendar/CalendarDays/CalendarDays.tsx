@@ -1,18 +1,20 @@
 import { useEffect, useState, type Dispatch, type SetStateAction } from 'react'
 import { handleDateClick } from '../../../utils/dateAction'
 import styles from './CalendarDays.module.css'
-import type { datesType } from './CalendarDays.types'
+import type { datesType, time } from './CalendarDays.types'
 
 export function CalendarDays({
 	days,
 	setDays,
 	salary,
-	setCurrentDay,
+	time,
+	setSelectedDayID,
 }: {
 	days: datesType[]
 	setDays: Dispatch<SetStateAction<datesType[]>>
 	salary: number
-	setCurrentDay: Dispatch<SetStateAction<datesType | undefined>>
+	time: time | undefined
+	setSelectedDayID: Dispatch<SetStateAction<number | null>>
 }) {
 	// Получаем нашу текущую дату
 	const [currentDate] = useState<Date>(new Date())
@@ -74,7 +76,14 @@ export function CalendarDays({
 						className={className}
 						key={item.id}
 						onClick={() =>
-							handleDateClick(item.id, days, setDays, salary, setCurrentDay)
+							handleDateClick(
+								item.id,
+								days,
+								setDays,
+								salary,
+								time,
+								setSelectedDayID,
+							)
 						}
 					>
 						{item.date.getDate()}
