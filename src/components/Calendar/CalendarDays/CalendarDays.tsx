@@ -1,5 +1,14 @@
-import { useEffect, useState, type Dispatch, type SetStateAction } from 'react'
-import { handleDateClick } from '../../../utils/dateAction'
+import {
+	useEffect,
+	useRef,
+	useState,
+	type Dispatch,
+	type SetStateAction,
+} from 'react'
+import {
+	handleDateClick,
+	handleDateDoubleClick,
+} from '../../../utils/dateAction'
 import styles from './CalendarDays.module.css'
 import type { datesType, time } from './CalendarDays.types'
 
@@ -16,6 +25,8 @@ export function CalendarDays({
 	time: time | undefined
 	setSelectedDayID: Dispatch<SetStateAction<number | null>>
 }) {
+	const clickTimeoutRef = useRef<number | null>(null)
+	const isDoubleClickRef = useRef(false)
 	// Получаем нашу текущую дату
 	const [currentDate] = useState<Date>(new Date())
 	useEffect(() => {
@@ -83,6 +94,17 @@ export function CalendarDays({
 								salary,
 								time,
 								setSelectedDayID,
+								clickTimeoutRef,
+								isDoubleClickRef,
+							)
+						}
+						onDoubleClick={() =>
+							handleDateDoubleClick(
+								item.id,
+								days,
+								setSelectedDayID,
+								clickTimeoutRef,
+								isDoubleClickRef,
 							)
 						}
 					>
