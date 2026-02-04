@@ -15,7 +15,7 @@ export function CalendarInfo({ days }: { days: datesType[] }) {
 							3600000) *
 						item.meta.price),
 			)
-		return sum
+		return sum < 0 ? sum * -1 : sum
 	}
 
 	return (
