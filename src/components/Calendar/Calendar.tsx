@@ -32,7 +32,14 @@ export function Calendar() {
 			</div>
 			<CalendarInfo days={days} />
 			<br />
-			<Settings setSalary={setSalary} salary={salary} setTime={setTime} />
+			<Settings
+				days={days}
+				setDays={setDays}
+				setSalary={setSalary}
+				salary={salary}
+				setTime={setTime}
+				time={time}
+			/>
 		</main>
 	)
 }
