@@ -10,6 +10,6 @@ export type metaType = {
 }
 
 export type time = {
-	startTime: string
-	finishTime: string
+	startTime: Date
+	finishTime: Date
 }
