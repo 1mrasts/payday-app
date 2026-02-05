@@ -1,5 +1,4 @@
 import { useState, type Dispatch, type SetStateAction } from 'react'
-import { getTime } from '../../../utils/dateAction'
 import type { datesType, time } from '../CalendarDays/CalendarDays.types'
 
 export function Settings({
@@ -9,13 +8,15 @@ export function Settings({
 	salary,
 	setTime,
 	time,
+	currentDay,
 }: {
 	days: datesType[]
 	setDays: Dispatch<SetStateAction<datesType[]>>
 	setSalary: Dispatch<SetStateAction<number>>
 	salary: number
-	setTime: Dispatch<SetStateAction<time | undefined>>
-	time: time | undefined
+	setTime: Dispatch<SetStateAction<time>>
+	time: time
+	currentDay: datesType | undefined
 }) {
 	const [startDay, setStartDay] = useState<string>('')
 	const [startTime, setStartTime] = useState<string>('')
@@ -41,8 +42,8 @@ export function Settings({
 						meta: isWorkDay
 							? {
 									price: salary,
-									startTime: getTime(time, day).startDate,
-									finishTime: getTime(time, day).finishDate,
+									startTime: time.startTime,
+									finishTime: time.finishTime,
 								}
 							: undefined,
 					}
@@ -56,11 +57,46 @@ export function Settings({
 		}
 	}
 
-	function saveTime() {
+	function saveTime(currentDate: datesType | undefined) {
+		const [startHours, startMinutes] = startTime.split(':').map(Number)
+		const [finishHours, finishMinutes] = endTime.split(':').map(Number)
+
+		const date = currentDate ? currentDate.date : new Date()
+
+		const startDate = new Date(
+			date.getFullYear(),
+			date.getMonth(),
+			date.getDate(),
+			startHours,
+			startMinutes,
+		)
+		const finishDate = new Date(
+			date.getFullYear(),
+			date.getMonth(),
+			date.getDate(),
+			finishHours,
+			finishMinutes,
+		)
+
 		setTime({
-			startTime: startTime,
-			finishTime: endTime,
+			startTime: startDate,
+			finishTime: finishDate,
 		})
+
+		setDays(prev =>
+			prev.map(item =>
+				item.id == currentDate?.id
+					? {
+							...item,
+							meta: {
+								...item.meta,
+								startTime: startDate,
+								finishTime: finishDate,
+							},
+						}
+					: item,
+			),
+		)
 	}
 	return (
 		<>
@@ -81,7 +117,7 @@ export function Settings({
 			<span>Конец дня:</span>
 			<input type='time' onChange={e => setEndTime(e.target.value)} />
 			<br />
-			<button onClick={saveTime}>Подтвердить</button>
+			<button onClick={() => saveTime(currentDay)}>Подтвердить</button>
 			<h3 onClick={() => setIsTemplatePanel(!isTemplatePanel)}>
 				Шаблоны графиков работы
 			</h3>

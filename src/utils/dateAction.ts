@@ -9,7 +9,7 @@ export function handleDateClick(
 	days: datesType[], // Типизируем state
 	setDays: Dispatch<SetStateAction<datesType[]>>, // Типизируем setState
 	salary: number,
-	time: time | undefined,
+	time: time,
 	setSelectedDayID: Dispatch<SetStateAction<number | null>>,
 	clickTimeoutRef: React.MutableRefObject<number | null>,
 	isDoubleClickRef: React.MutableRefObject<boolean>,
@@ -37,8 +37,8 @@ export function handleDateClick(
 								...item,
 								meta: {
 									price: salary,
-									startTime: getTime(time, currentDate).startDate,
-									finishTime: getTime(time, currentDate).finishDate,
+									startTime: time.startTime,
+									finishTime: time.finishTime,
 								},
 							}
 						: item,
@@ -71,32 +71,32 @@ export function handleDateDoubleClick(
 	console.log('double click')
 }
 
-export function getTime(
-	time: time | undefined,
-	currentDate: datesType | undefined,
-) {
-	const [startHours, startMinutes] = time
-		? time.startTime.split(':').map(Number)
-		: [8, 0]
-	const [finishHours, finishMinutes] = time
-		? time.finishTime.split(':').map(Number)
-		: [21, 0]
+// export function getTime(
+// 	time: time | undefined,
+// 	currentDate: datesType | undefined,
+// ) {
+// 	const [startHours, startMinutes] = time
+// 		? time.startTime.split(':').map(Number)
+// 		: [8, 0]
+// 	const [finishHours, finishMinutes] = time
+// 		? time.finishTime.split(':').map(Number)
+// 		: [21, 0]
 
-	const date = currentDate ? currentDate.date : new Date()
+// 	const date = currentDate ? currentDate.date : new Date()
 
-	const startDate = new Date(
-		date.getFullYear(),
-		date.getMonth(),
-		date.getDate(),
-		startHours,
-		startMinutes,
-	)
-	const finishDate = new Date(
-		date.getFullYear(),
-		date.getMonth(),
-		date.getDate(),
-		finishHours,
-		finishMinutes,
-	)
-	return { startDate, finishDate }
-}
+// 	const startDate = new Date(
+// 		date.getFullYear(),
+// 		date.getMonth(),
+// 		date.getDate(),
+// 		startHours,
+// 		startMinutes,
+// 	)
+// 	const finishDate = new Date(
+// 		date.getFullYear(),
+// 		date.getMonth(),
+// 		date.getDate(),
+// 		finishHours,
+// 		finishMinutes,
+// 	)
+// 	return { startDate, finishDate }
+// }
