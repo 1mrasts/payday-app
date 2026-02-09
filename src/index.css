@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+span {
+	margin: 0;
+	padding: 0;
+	font-family: 'Inter';
+	color: white;
+}
+
+main {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+body {
+	padding: 40px;
+	background-color: #0a0a0b;
+}
+.sep {
+	background-color: #242428;
+	width: 100%;
+	height: 3px;
+}
+
+.calendar__block {
+	position: relative;
+	background-color: #131315;
+	padding: 15px 10px;
+	border: 1px #2e2e33 solid;
+	border-radius: 15px;
+	display: flex;
+	flex-direction: column;
+	max-width: 900px;
+	gap: 15px;
+	width: 100%;
+}
+.calendar__block h4 {
+	font-size: 40px;
+}
+.calendar__block h5 {
+	font-size: 24px;
+}
+.calendar__block p {
+	font-size: 20px;
+}
+.calendar__block span {
+	font-size: 20px;
+}
+.calendar__col {
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+}
+.calendar__block img {
+	width: 20px;
+	height: 20px;
+}
+.calendar__block input {
+	-moz-appearance: textfield !important; /* Firefox */
+	-webkit-appearance: none; /* Chrome, Safari, Edge */
+	background-color: #1d1d20;
+	border: 1px #2e2e33 solid;
+	color: #ffffff25;
+	outline: none;
+	border-radius: 5px;
+	font-size: 16px;
+}
+
+.calendar__block button {
+	cursor: pointer;
+	padding: 3px 20px;
+	background-color: #1d1d20;
+	border: 1px #2e2e33 solid;
+	color: #ffffff25;
+	outline: none;
+	border-radius: 5px;
+	font-size: 16px;
+}
+.width-48 {
+	max-width: 440px !important;
+	min-height: 285px;
+	box-sizing: border-box;
+}
+.calendar__title {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
