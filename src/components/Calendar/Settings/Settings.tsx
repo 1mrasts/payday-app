@@ -1,60 +1,53 @@
 import { useState, type Dispatch, type SetStateAction } from 'react'
 import type { datesType, time } from '../CalendarDays/CalendarDays.types'
+import styles from './Settings.module.css'
+import dayCountI from '/src/assets/Settings/Day-count.svg'
+import setEndDayI from '/src/assets/Settings/Set-end-day.svg'
+import setSalaryI from '/src/assets/Settings/Set-salary.svg'
+import setStartDayI from '/src/assets/Settings/Set-start-day.svg'
 
 export function Settings({
 	days,
 	setDays,
-	setSalary,
-	salary,
 	setTime,
-	time,
+	salary,
+	setSalary,
 	currentDay,
 }: {
 	days: datesType[]
 	setDays: Dispatch<SetStateAction<datesType[]>>
-	setSalary: Dispatch<SetStateAction<number>>
-	salary: number
 	setTime: Dispatch<SetStateAction<time>>
-	time: time
+	salary: number
+	setSalary: Dispatch<SetStateAction<number>>
 	currentDay: datesType | undefined
 }) {
-	const [startDay, setStartDay] = useState<string>('')
 	const [startTime, setStartTime] = useState<string>('')
 	const [endTime, setEndTime] = useState<string>('')
-	const [isTemplatePanel, setIsTemplatePanel] = useState<boolean>(false)
+	const today = new Date()
 
-	function applyTemplate({ work, rest }: { work: number; rest: number }) {
-		let counter = 1
-		const [y, m, d] = startDay.split('-')
-		const startDate = new Date(Number(y), Number(m) - 1, Number(d), 0, 0, 0)
-		const currentStartDay = days.find(
-			day => day.date.getTime() == startDate.getTime(),
-		)
-		if (currentStartDay != undefined) {
-			setDays(prev =>
-				prev.map(day => {
-					if (day.id < currentStartDay?.id) return day
-					const isWorkDay = counter <= work
+	function getFullSum() {
+		let sum = 0
 
-					counter++
-					const updateDay = {
-						...day,
-						meta: isWorkDay
-							? {
-									price: salary,
-									startTime: time.startTime,
-									finishTime: time.finishTime,
-								}
-							: undefined,
-					}
-					if (counter > work + rest) {
-						counter = 1
-					}
-
-					return updateDay
-				}),
+		days
+			.filter(item => item.meta != undefined)
+			.forEach(
+				item =>
+					item.meta != undefined &&
+					item.meta.price &&
+					(sum +=
+						((item.meta.finishTime.getTime() - item.meta.startTime.getTime()) /
+							3600000) *
+						item.meta.price),
 			)
-		}
+		return sum < 0 ? sum * -1 : sum
+	}
+
+	function getWorkDayCount() {
+		return days.filter(
+			item =>
+				item.meta?.price != undefined &&
+				item.date.getMonth() + 1 == today.getMonth() + 1,
+		).length
 	}
 
 	function saveTime(currentDate: datesType | undefined) {
@@ -90,6 +83,7 @@ export function Settings({
 							...item,
 							meta: {
 								...item.meta,
+								price: salary,
 								startTime: startDate,
 								finishTime: finishDate,
 							},
@@ -98,58 +92,50 @@ export function Settings({
 			),
 		)
 	}
+
 	return (
-		<>
-			<span>Почасовая ставка: </span>
-			<input
-				type='number'
-				onChange={e =>
-					isNaN(Number(e.target.value))
-						? setSalary(0)
-						: setSalary(Number(e.target.value))
-				}
-				value={salary}
-			/>
-			<br />
-			<span>Начало дня:</span>
-			<input type='time' onChange={e => setStartTime(e.target.value)} />
-			<br />
-			<span>Конец дня:</span>
-			<input type='time' onChange={e => setEndTime(e.target.value)} />
-			<br />
-			<button onClick={() => saveTime(currentDay)}>Подтвердить</button>
-			<h3 onClick={() => setIsTemplatePanel(!isTemplatePanel)}>
-				Шаблоны графиков работы
-			</h3>
-			{isTemplatePanel ? (
-				<>
-					<span>Начинать с: </span>
-					<input type='date' onChange={e => setStartDay(e.target.value)} />
-					<h4>Классические графики</h4>
-					<button onClick={() => applyTemplate({ work: 5, rest: 2 })}>
-						5/2
+		<div className='calendar__block width-48'>
+			<div className='calendar__title'>
+				<h5>Сумма в месяц: {getFullSum()}</h5>
+				<div className='calendar__col'>
+					<img src={dayCountI} alt='' />
+					<span>Рабочих дней в месяц: {getWorkDayCount()}</span>
+				</div>
+			</div>
+			<div className='sep'></div>
+			<div className={styles['calendar__settings']}>
+				<div className={styles['calendar__settings-body']}>
+					<div className='calendar__col'>
+						<img src={setSalaryI} alt='' />
+						<span>Почасовая ставка: </span>
+						<input
+							type='number'
+							onChange={e =>
+								isNaN(Number(e.target.value))
+									? setSalary(0)
+									: setSalary(Number(e.target.value))
+							}
+							placeholder='141'
+							value={salary}
+						/>
+					</div>
+					<div className='calendar__col'>
+						<img src={setStartDayI} alt='' />
+						<span>Начало дня:</span>
+						<input type='time' onChange={e => setStartTime(e.target.value)} />
+					</div>
+					<div className='calendar__col'>
+						<img src={setEndDayI} alt='' />
+						<span>Конец дня:</span>
+						<input type='time' onChange={e => setEndTime(e.target.value)} />
+					</div>
+				</div>
+				<div className={styles['calendar__settings-button']}>
+					<button onClick={() => saveTime(currentDay)}>
+						Сохранить настройки
 					</button>
-					<button onClick={() => applyTemplate({ work: 6, rest: 1 })}>
-						6/1
-					</button>
-					<h4>Сменные графики</h4>
-					<button onClick={() => applyTemplate({ work: 2, rest: 2 })}>
-						2/2
-					</button>
-					<button onClick={() => applyTemplate({ work: 3, rest: 3 })}>
-						3/3
-					</button>
-					<button onClick={() => applyTemplate({ work: 4, rest: 2 })}>
-						4/2
-					</button>
-					<br />
-					<button onClick={() => applyTemplate({ work: 0, rest: 0 })}>
-						Очистить
-					</button>
-				</>
-			) : (
-				<></>
-			)}
-		</>
+				</div>
+			</div>
+		</div>
 	)
 }
