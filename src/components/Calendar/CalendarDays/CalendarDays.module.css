@@ -1,17 +1,49 @@
 .calendar__menu {
 	display: grid;
-	gap: 15px;
+	row-gap: 15px;
 	grid-template-columns: repeat(7, 1fr);
 	max-width: 900px;
 }
 .calendar__menu span {
+	-webkit-user-select: none; /* Chrome, Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* старый Edge */
+	user-select: none; /* стандарт */
+	cursor: pointer;
+	padding: 0 32px 0 32px;
+	font-size: 32px;
+	max-width: 110px;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
+	color: #4d4d4d;
+	opacity: 75%;
+	transition: ease-out 0.2s;
 }
 .today {
-	color: red;
+	color: red !important;
 }
 .prices {
-	background-color: brown;
+	border-radius: 5px;
+	background-color: #a51f1f;
+}
+.prices-month {
+	opacity: 100% !important;
+	border-radius: 5px;
+	background-color: #a51f1f;
+	color: #000000 !important;
+}
+.month {
+	opacity: 100% !important;
+	color: #ffffff !important;
+}
+.day:hover {
+	border-radius: 5px;
+	background-color: #4d4d4d25;
+	opacity: 100%;
+}
+.day.prices:hover {
+	border-radius: 5px;
+	background-color: #a51f1f25;
+	opacity: 100%;
 }

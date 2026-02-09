@@ -72,19 +72,25 @@ export function CalendarDays({
 
 				const hasPrice = item?.meta !== undefined
 
+				const isMonth = item.date.getMonth() === currentDate.getMonth()
+
 				let className = ''
 
-				if (isToday && hasPrice) {
-					className = `${styles['today']} ${styles['prices']}`
+				if (isToday && hasPrice && isMonth) {
+					className = `${styles['today']} ${styles['prices-month']}`
+				} else if (hasPrice && isMonth) {
+					className = `${styles['prices']} ${styles['month']}`
 				} else if (isToday) {
 					className = `${styles['today']}`
 				} else if (hasPrice) {
 					className = `${styles['prices']}`
+				} else if (isMonth) {
+					className = `${styles['month']}`
 				}
 
 				return (
 					<span
-						className={className}
+						className={`${className} ${styles['day']}`}
 						key={item.id}
 						onClick={() =>
 							handleDateClick(
