@@ -1,0 +1,27 @@
+.calendar__settings-body {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+.calendar__settings {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 100%;
+	height: 100%;
+}
+.calendar__settings-button {
+	display: flex;
+	width: 100%;
+}
+.calendar__settings-button button {
+	cursor: pointer;
+	padding: 3px 20px;
+	background-color: #1d1d20;
+	border: 1px #2e2e33 solid;
+	color: #ffffff25;
+	outline: none;
+	border-radius: 5px;
+	font-size: 16px;
+	width: 100%;
+}
