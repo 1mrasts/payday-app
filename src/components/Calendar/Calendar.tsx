@@ -4,8 +4,8 @@ import { CalendarDay } from './CalendarDay/CalendarDay'
 import { CalendarDays } from './CalendarDays/CalendarDays'
 import type { datesType, time } from './CalendarDays/CalendarDays.types'
 import { CalendarHeader } from './CalendarHeader/CalendarHeader'
-import { CalendarInfo } from './CalendarInfo/CalendarInfo'
 import { Settings } from './Settings/Settings'
+import { TemplateSettings } from './Settings/TemplateSettings/TemplateSettings'
 
 export function Calendar() {
 	const [days, setDays] = useState<datesType[]>([])
@@ -19,31 +19,39 @@ export function Calendar() {
 	return (
 		<main>
 			<div className={styles.calendar}>
-				<div className={styles['calendar__main']}>
-					<CalendarHeader />
-					<CalendarDays
-						days={days}
-						setDays={setDays}
-						time={time}
-						salary={salary}
-						setSelectedDayID={setSelectedDayID}
-					/>
+				<div className={styles['calendar__wrapper']}>
+					<div className={styles['calendar__block-main']}>
+						<CalendarHeader />
+						<div className='sep'></div>
+						<CalendarDays
+							days={days}
+							setDays={setDays}
+							time={time}
+							salary={salary}
+							setSelectedDayID={setSelectedDayID}
+						/>
+					</div>
+					<div className={styles['settings__block']}>
+						<Settings
+							days={days}
+							setDays={setDays}
+							setTime={setTime}
+							salary={salary}
+							setSalary={setSalary}
+							currentDay={currentDay}
+						/>
+						<TemplateSettings
+							days={days}
+							setDays={setDays}
+							salary={salary}
+							time={time}
+						/>
+					</div>
 				</div>
 				<div>
 					<CalendarDay day={currentDay} />
 				</div>
 			</div>
-			<CalendarInfo days={days} />
-			<br />
-			<Settings
-				days={days}
-				setDays={setDays}
-				setSalary={setSalary}
-				salary={salary}
-				setTime={setTime}
-				time={time}
-				currentDay={currentDay}
-			/>
 		</main>
 	)
 }
